@@ -33,12 +33,8 @@ heading_anchors: true
 
 # Aux links for the upper right navigation
 aux_links:
-  "nPrint on GitHub":
-    - "//github.com/nprint/nprint"
-  "nPrintML on GitHub":
-    - "//github.com/nprint/nprintML"
-  "pcapml on GitHub":
-    - "//github.com/nprint/pcapml"
+  "Traffic Refinery on GitHub":
+    - "//github.com/traffic-refinery/traffic-refinery-prerelease"
 
 # Makes Aux links open in a new tab. Default is false
 aux_links_new_tab: false
