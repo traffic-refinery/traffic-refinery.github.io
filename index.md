@@ -1,86 +1,105 @@
+---
+layout: default
+title: Main
+nav_order: 1
+has_children: false
+permalink: /
+---
+
 # Traffic Refinery
+Cost-aware network traffic analysis.
 
-Traffic analysis using [Go packet library](https://github.com/google/gopacket).
+Relationships between systems costs and model performance would ideally inform
+machine learning pipelines during design; yet, most existing network traffic
+representation decisions are made a priori, without concern for future use by
+models. To enable this exploration, we have created `Traffic Refinery`, a system
+designed to offer **flexibly extensible network data representations**, the
+ability to assess the **systems-related costs** of these representations, and
+the **effects of different representations on model performance**. 
 
-## Compilation  
+## System Overview
+![Traffic Refinery System Overview Diagram](assets/system.png)
 
-### From source on your native host
-Additionally to go, Traffic Refinery requires libpcap and PF_RING installed in your system to correctly compile and run.
+The figure shows an overview of the system architecture. `Traffic Refinery` is
+implemented in Go to exploit performance and flexibility, as well as its
+built-in benchmarking tools. The system design revolves around three guidelines:
+(1) Detect flows and applications of interest early in the processing pipeline
+to avoid unnecessary overhead; (2) Support state-of-the-art packet processing
+while minimizing the entry cost for extending which features to collect; (3)
+Aggregate flow statistics at regular time intervals and store for future
+consumption. The pipeline has three components: 
 
-* [Install Go and set up your local environment](https://golang.org/doc/install).
-  * `sudo apt-get install golang`
+1. A traffic categorization module responsible for associating network traffic
+   with applications 
+2. A packet capture and processing module that collects network flow statistics
+   and tracks their state at line rate; moreover, this block implements a cache
+   used to store flow state information
+3. An aggregation and storage module that queries the flow cache to obtain
+   features and statistics about each traffic flow and stores higher-level
+   features concerning the applications of interest for later processing
 
-* Get the libpcap and libpcap-dev packages for your dev platform.
-* [Install PF_RING](https://www.ntop.org/guides/pf_ring/get_started/index.html).
-<!-- * Install other dependencies:
-  * `go get github.com/spf13/viper`
-  * `go get github.com/sirupsen/logrus`
-  * `go get github.com/google/gopacket` -->
+## Why is Traffic Refinery Necessary?
+Network management increasingly relies on machine learning to make predictions
+about performance and security from network traffic. Often, the representation
+of the traffic is as important as the choice of the model. The features that the
+model relies on, and the representation of those features, ultimately determine
+model accuracy, as well as where and whether the model can be deployed in
+practice. Thus, the design and evaluation of these models ultimately requires
+understanding not only model accuracy but also the systems costs associated with
+deploying the model in an operational network. 
 
-Once you have installed all the dependencies, you can proceed to install Traffic Refinery.
+To highlight the need for `Traffic Refinery`, we show results from our [prior
+work](https://dl.acm.org/doi/10.1145/3366704) by training multiple ML models to
+infer the resolution of video streaming applications over time using different
+data representations: 1) using only L3 features, as would be available using
+`netflow`; 2) adding transport layer features; and 3) further adding application
+layer features. The figure below shows the precision and recall achieved by each
+representation. 
 
-* Clone the traffic refinery source code `go get github.com/traffic-refinery/traffic-refinery` and change to the downloaded folder `cd $GOHOME/src/github.com/traffic-refinery/traffic-refinery/`.
-* Download go modules
-  * `go mod init github.com/traffic-refinery/traffic-refinery`
-  * `go mod tidy`
-* Run `build.sh`. 
-  * For cross-compilation, check below.
+![Resolution inference features](assets/resolution_features.png){:align="center" height="60%" width="60%"}
+
+As one might expect, a model trained solely with L3 features achieves the
+poorest performance. Hence, relying solely on features offered by existing
+network infrastructure would produce the worst performing models. On the
+other hand, combining Network and Application features results in more than a
+10% increase in both precision and recall. This example showcases how limiting
+available data representations to the ones typically available from existing
+systems (\eg, NetFlow) can inhibit potential gains, highlighted by the
+blue-shaded area. 
+
+Of course, any representation is possible if packet traces are the starting
+point, but raw packet capture can be prohibitive in operational networks,
+especially at high speeds.  The figure below shows the amount of storage
+required to collect a one-hour packet capture from a live 10 Gbps link. 
+
+![Storage profile](assets/storage_profile.png){:align="center" height="58%" width="58%"}
 
 
-## Run instructions
+`Traffic Refinery` provides a new framework and system that enables a joint
+evaluation of both the conventional notions of machine learning performance
+(e.g., model accuracy) and the systems-level costs of different representations
+of network traffic. 
 
-### Configuration
-  
- Traffic Refinery supports configuration in json format. When executed, unless specified otherwise, Traffic Refinery searches for a configuration file named `trconfig.json` first in the execution folder and then in the `/etc/traffic-refinery/` folder. to import a configuration from a file located in a different location use the `-conf` option at execution.
- 
- *NOTE: providing a configuration file is necessary.* 
+## Publication
+The research paper behind `Traffic Refinery` was accepted to SIGMETRICS 2022,
+and published in ACM POMACS in December 2021.
 
- For details on the configuration of Traffic Refinery please refer to the [config](internal/config/config.go) package. Multiple examples are available in the [configs](configs/) folder.
-
-#### Service configuration
-Coming soon...
-
-
-## Using Docker
-To simplify dependencies management it is possible to use a docker container to develop or execute Traffic Refinery. There are three docker releases that can be used under different scenarios.
-
-### Development
-
-Develop and quickly test new features.
-
+### Citation bibtex
 ```
-# Create image
-docker image build --tag traffic-refinery:devel -f ./Dockerfile.devel .
-
-# Run (from your local $GO_HOME/go/src/github.com/traffic-refinery/traffic-refinery/)
-docker run -it --entrypoint /bin/bash --rm --mount type=bind,source=$(pwd),destination=/go/src/github.com/traffic-refinery/traffic-refinery/ traffic-refinery:devel
+@article{10.1145/3491052,
+    author = {Bronzino, Francesco and Schmitt, Paul and Ayoubi, Sara and Kim, Hyojoon and Teixeira, Renata and Feamster, Nick},
+    title = {Traffic Refinery: Cost-Aware Data Representation for Machine Learning on Network Traffic},
+    year = {2021},
+    issue_date = {December 2021},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {5},
+    number = {3},
+    url = {https://doi.org/10.1145/3491052},
+    doi = {10.1145/3491052},
+    journal = {Proc. ACM Meas. Anal. Comput. Syst.},
+    month = {dec},
+    articleno = {40},
+    numpages = {24}
+}
 ```
-
-Once run using this command, the terminal remains open inside the `traffic-refinery` folder inside your container. This folder is fully synchronized (see more about the `mount` command on Docker's website) with your host folder. You can follow the instructions in the `Compilation` section for compiling the code.
-
-### Running
-
-Run a precompiled container with Traffic Refinery.
-
-```
-# Create image
-docker image build --tag traffic-refinery:linux-amd64 .
-
-# Run 
-docker run --detach --mount source=/tmp,target=/tmp \
-    --network=host --name tr --rm \
-    traffic-refinery:linux-amd64
-```
-
-This runs the container in the background and the output of Traffic Refinery is store inside the `/tmp/` folder (see more about the `mount` command on Docker's website). To you a custom configuration mount the desired file into the container and reference to it using the command line parameters.
-
-```
-# Run 
-docker run --detach --mount source=/tmp,target=/tmp \
-    --network=host --name tr --rm \
-    -mount type=bind,source=path/to/config/newconf.json,destination=/config/newconf.json,readonly
-    traffic-refinery:linux-amd64 -conf /config/newconf.json
-```
-
-## Cross-compilation instructions (Linux)
-Coming soon...
