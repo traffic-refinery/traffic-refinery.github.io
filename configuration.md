@@ -8,10 +8,10 @@ nav_order: 1
 ---
 
 # Configuration
-`Traffic Refinery`'s configuration is defined using a json file. The default
+`Traffic Refinery`'s configuration is defined using a JSON file. The default
 configuration filename is `trconfig.json`. At runtime, `Traffic Refinery`
 searches for the config file, first in the current directory and then in the
-`/etc/traffic-refinery/` directory. to import a configuration from a file
+`/etc/traffic-refinery/` directory. To import a configuration from a file
 located in a different location use the `-conf` option.
 
 **NOTE: providing a configuration file is necessary.** 
