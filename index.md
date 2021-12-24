@@ -11,7 +11,7 @@ Cost-aware network traffic analysis.
 
 Relationships between systems costs and model performance would ideally inform
 machine learning pipelines during design; yet, most existing network traffic
-representation decisions are made a priori, without concern for future use by
+representation decisions are made *a priori*, without concern for future use by
 models. To enable this exploration, we have created `Traffic Refinery`, a system
 designed to offer **flexibly extensible network data representations**, the
 ability to assess the **systems-related costs** of these representations, and
@@ -32,8 +32,8 @@ consumption. The pipeline has three components:
 1. A traffic categorization module responsible for associating network traffic
    with applications 
 2. A packet capture and processing module that collects network flow statistics
-   and tracks their state at line rate; moreover, this block implements a cache
-   used to store flow state information
+   and tracks their state; moreover, this block implements a cache used to store
+   flow state information
 3. An aggregation and storage module that queries the flow cache to obtain
    features and statistics about each traffic flow and stores higher-level
    features concerning the applications of interest for later processing
@@ -50,21 +50,21 @@ deploying the model in an operational network.
 
 To highlight the need for `Traffic Refinery`, we show results from our [prior
 work](https://dl.acm.org/doi/10.1145/3366704) by training multiple ML models to
-infer the resolution of video streaming applications over time using different
-data representations: 1) using only L3 features, as would be available using
-`netflow`; 2) adding transport layer features; and 3) further adding application
-layer features. The figure below shows the precision and recall achieved by each
-representation. 
+infer the resolution of encrypted video streaming applications over time using
+different data representations: 1) using only L3 features, as would be available
+using `netflow`; 2) adding transport layer features; and 3) adding application
+layer features to L3; and combining all features. The figure below shows the
+precision and recall achieved by each representation. 
 
 ![Resolution inference features](assets/resolution_features.png){:align="center" height="60%" width="60%"}
 
 As one might expect, a model trained solely with L3 features achieves the
 poorest performance. Hence, relying solely on features offered by existing
-network infrastructure would produce the worst performing models. On the
-other hand, combining Network and Application features results in more than a
-10% increase in both precision and recall. This example showcases how limiting
+network infrastructure would produce the worst performing models. On the other
+hand, combining Network and Application features results in more than a 10%
+increase in both precision and recall. This example showcases how limiting
 available data representations to the ones typically available from existing
-systems (\eg, NetFlow) can inhibit potential gains, highlighted by the
+systems (e.g., NetFlow) can inhibit potential gains, highlighted by the
 blue-shaded area. 
 
 Of course, any representation is possible if packet traces are the starting
