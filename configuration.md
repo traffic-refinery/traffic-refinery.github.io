@@ -17,10 +17,10 @@ located in a different location use the `-conf` option.
 **NOTE: providing a configuration file is necessary.** 
 
 For details on the configuration of `Traffic Refinery` please refer to
-[`config.go`](https://github.com/traffic-refinery/traffic-refinery-prerelease/tree/reflection/internal/config/config.go).
+[`config`](https://pkg.go.dev/github.com/traffic-refinery/traffic-refinery/internal/config).
 Multiple examples are available in the
-[configs](https://github.com/traffic-refinery/traffic-refinery-prerelease/tree/reflection/configs)
-directory in the repo. Here we provide an [example](https://github.com/traffic-refinery/traffic-refinery-prerelease/tree/reflection/configs/trconfig_default.json)
+[configs](https://github.com/traffic-refinery/traffic-refinery/tree/main/configs)
+directory in the repo. Here we provide an [example](https://github.com/traffic-refinery/traffic-refinery/tree/main/configs/trconfig_default.json)
 config file, with explanations of each block.
 ### Sys
 The `Sys` block controls whether different profiling functionality is enabled or
@@ -40,7 +40,7 @@ The `Parsers` block controls the interfaces, drivers, and mode to use for the
 supports `pcap`, `pfring`, and `afpacket` as drivers. Valid modes are `host`,
 `router`, `mirror`, and `replay`. Modes control the behavior when determining
 the direction of traffic by examining MAC addresses, details can be found in
-[`network.go`](https://github.com/traffic-refinery/traffic-refinery-prerelease/tree/reflection/internal/network/network.go)
+[`network`](https://pkg.go.dev/github.com/traffic-refinery/traffic-refinery/internal/network).
 ```
   "Parsers": {
     "DNSParser": {
@@ -59,7 +59,7 @@ the direction of traffic by examining MAC addresses, details can be found in
 ```
 ### FlowCache
 The `FlowCache` block controls the size and eviction policy of the
-[`flowcache.go`](https://github.com/traffic-refinery/traffic-refinery-prerelease/tree/reflection/internal/flowstats/flowcache.go).
+[`flowcache`](https://pkg.go.dev/github.com/traffic-refinery/traffic-refinery/internal/flowstats).
 Currently, `Traffic Refinery` only supports `ConcurrentCacheMap` as the
 flowcache type.
 ```
