@@ -25,9 +25,8 @@ profile the different costs intrinsic to the collection process. At data
 representation design time, users employ the profiling method to quickly iterate
 through the collection of different features in isolation and provide a fair
 comparison for the three cost metrics. The relevant profiling code is located in
-the
-[cmd](https://github.com/traffic-refinery/traffic-refinery-prerelease/tree/reflection/cmd)
-directory in the repo.
+the [cmd](https://pkg.go.dev/github.com/traffic-refinery/traffic-refinery/cmd)
+directory.
 
 `Traffic Refinery` supports two modes for profiling feature costs: 
 1. Profiling from live traffic: in this setting the system captures traffic from
