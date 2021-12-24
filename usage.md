@@ -14,3 +14,5 @@ different services of interest is controlled using
 features available in `Traffic Refinery`, and [profile](profile.html) any
 features. Lastly, `Traffic Refinery` can be run [offline](offline.html) on
 previously captured traffic.
+
+GoDoc documentation is available [here](https://pkg.go.dev/github.com/traffic-refinery/traffic-refinery/).
