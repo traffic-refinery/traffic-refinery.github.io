@@ -32,12 +32,12 @@ docker run --detach --mount source=/tmp,target=/tmp \
     traffic-refinery:linux-amd64
 ```
 
-This runs the container in the background and the output of Traffic Refinery is
-store inside the `/tmp/` directory (see more about the `mount` command on
+This runs the container in the background and the output of `Traffic Refinery`
+is stored inside the `/tmp/` directory (see more about the `mount` command on
 Docker's website). 
 
-To use a custom configuration mount the desired file into the container and
-reference to it using the command line parameters:
+To use a custom configuration, mount the desired file into the container and
+reference it using command line parameters:
 
 #### Start traffic refinery with custom configuration file
 ```
@@ -67,19 +67,20 @@ Once run using this command, the terminal remains open inside the
 `traffic-refinery` directory inside your container. This directory is fully
 synchronized (see more about the `mount` command on Docker's website) with your
 host directory. You can follow the instructions in the [Compilation From
-Source](##Compilation-From-Source) section for compiling the code.
+Source](#compilation-from-source) section for compiling the code.
 
 ## Compilation From Source 
 
 ### From source on your native host
-In addition to go, `Traffic Refinery` requires libpcap and PF_RING installed in
-your system to correctly compile and run.
+In addition to Go, `Traffic Refinery` requires libpcap or PF_RING or af_packet
+installed in your system to correctly compile and run.
 
 * [Install Go and set up your local environment](https://golang.org/doc/install).
   * `sudo apt-get install golang`
 * Get the libpcap and libpcap-dev packages for your dev platform.
   * `sudo apt-get install libpcap-dev`
-* [Install PF_RING](https://www.ntop.org/guides/pf_ring/get_started/index.html).
+* (Optional) [Install
+  PF_RING](https://www.ntop.org/guides/pf_ring/get_started/index.html).
   * `sudo apt-get install pfring`
 
 
@@ -90,6 +91,10 @@ Once you have installed all the dependencies, you can proceed to install
   github.com/traffic-refinery/traffic-refinery` and change to the downloaded
   directory `cd $GOHOME/src/github.com/traffic-refinery/traffic-refinery/`.
 * Download the necessary modules
-  <!-- * `go mod init github.com/traffic-refinery/traffic-refinery` -->
   * `go mod tidy`
 * Run `make`. 
+
+**Note: the default Makefile currently assumes libpcap is available on the host
+and does not compile with PF_RING or af_packet enabled. The relevant command for
+enabling additional packet capture libraries is the build command (e.g., `go
+build -o tr -tags=ring,afpacket cmd/traffic-refinery/tr.go`)** 
