@@ -34,7 +34,7 @@ heading_anchors: true
 # Aux links for the upper right navigation
 aux_links:
   "Traffic Refinery on GitHub":
-    - "//github.com/traffic-refinery/traffic-refinery-prerelease"
+    - "//github.com/traffic-refinery/traffic-refinery"
 
 # Makes Aux links open in a new tab. Default is false
 aux_links_new_tab: false
