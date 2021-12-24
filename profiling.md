@@ -9,7 +9,7 @@ nav_order: 2
 
 # Cost Profiling
 `Traffic Refinery` aims to provide an intuitive platform to evaluate the system
-cost effects of active data representations. We have initially included the
+cost effects of network data representations. We have initially included the
 capacity for profiling three metrics: state, processing, and storage. We choose
 these metrics as they directly affect the ability of a measurement system to
 collect features from network traffic, a fundamental prerequisite for all
@@ -32,23 +32,23 @@ directory.
 1. Profiling from live traffic: in this setting the system captures traffic from
    a network interface and collects statistics for a configurable time interval.
 2. Profiling using offline traffic traces: in this setting profiling runs over
-   recorded traffic traces, which enables fine-grained inspection of specific
-   traffic events (e.g., a single video streaming session) as well as
-   repeatability and reproducibility of results. 
+   recorded traffic traces (e.g., pcaps), which enables fine-grained inspection
+   of specific traffic events (e.g., a single video streaming session) as well
+   as repeatability and reproducibility of results. 
    
 To select the sets of user-defined features to profile, the profiling tool takes
-as input the same system configuration file used for executing the system. Upon
-execution, the system creates a dedicated measurement pipeline that collects
-statistics over time. 
+as input the same system configuration file used when running the system
+normally. Upon execution, the system creates a dedicated measurement pipeline
+that collects statistics over time. 
 
 ## State costs
 We aim to collect the amount of in-use memory over time for each feature class
 independently. To achieve this, we use Go's `pprof` profiling tool. Using this
 tool, the system can output at a desired instant a snapshot of the entire in-use
 memory of the system. We extract from this snapshot the amount of memory that
-has been allocated by each service class at the end of each iteration of the
-collection cycle, i.e., the time the aggregation and storage module gathers the
-data from the cache, which corresponds to peak memory usage for each interval.
+has been allocated by each service class at the end of each collection cycle,
+i.e., the time the aggregation and storage module gathers the data from the
+cache, which corresponds to peak memory usage for each interval.
 
 ## Processing costs 
 To evaluate the CPU usage for each feature class, we monitor the amount of time

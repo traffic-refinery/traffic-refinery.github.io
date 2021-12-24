@@ -10,10 +10,10 @@ nav_order: 4
 # Running Traffic Refinery Offline (pcap)
 
 `Traffic Refinery` can also be run on pcap files that have previously been
-captured. We currently support this by essentially replaying the pcap using
-`tcpreplay`. Below is an example to run in a Docker container. Note that the
+captured. We currently support this by replaying the pcap using `tcpreplay`.
+Below is an example to run replay mode in a Docker container. Note that the
 mounted directory is where the configuration file and output files will be
-searched for / stored. In this case, the Docker image would use /out, which
+searched for and stored. In this case, the Docker image would use `/out`, which
 would be a mount to a directory on the host.
 
 ```
