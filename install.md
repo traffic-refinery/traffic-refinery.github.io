@@ -90,6 +90,6 @@ Once you have installed all the dependencies, you can proceed to install
   github.com/traffic-refinery/traffic-refinery` and change to the downloaded
   directory `cd $GOHOME/src/github.com/traffic-refinery/traffic-refinery/`.
 * Download the necessary modules
-  * `go mod init github.com/traffic-refinery/traffic-refinery`
+  <!-- * `go mod init github.com/traffic-refinery/traffic-refinery` -->
   * `go mod tidy`
 * Run `make`. 
