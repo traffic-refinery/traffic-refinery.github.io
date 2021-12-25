@@ -22,12 +22,7 @@ the **effects of different representations on model performance**.
 
 The figure shows an overview of the system architecture. `Traffic Refinery` is
 implemented in Go to exploit performance and flexibility, as well as its
-built-in benchmarking tools. The system design revolves around three guidelines:
-(1) Detect flows and applications of interest early in the processing pipeline
-to avoid unnecessary overhead; (2) Support state-of-the-art packet processing
-while minimizing the entry cost for extending which features to collect; (3)
-Aggregate flow statistics at regular time intervals and store for future
-consumption. The pipeline has three components: 
+built-in benchmarking tools. The system has three components: 
 
 1. A traffic categorization module responsible for associating network traffic
    with applications 
@@ -37,6 +32,17 @@ consumption. The pipeline has three components:
 3. An aggregation and storage module that queries the flow cache to obtain
    features and statistics about each traffic flow and stores higher-level
    features concerning the applications of interest for later processing
+
+## tl;dr: What Can You Do with Traffic Refinery?
+*  Traffic (i.e., flows) are classified as "services" using either DNS domains
+   or IP prefixes that the user can provide. *Note: DNS is increasingly
+   encrypted, making this method less reliable. An area of ongoing research is
+   privacy-preserving flow categorization.*
+*  For each service, users can select from a set of existing features or create
+   additional ones to collect along with their frequency.
+*  The system-related costs of each feature can be profiled, enabling users to
+   explore tradeoffs between ML model performance and feature costs in their
+   particular environment.
 
 ## Why is Traffic Refinery Necessary?
 Network management increasingly relies on machine learning to make predictions
