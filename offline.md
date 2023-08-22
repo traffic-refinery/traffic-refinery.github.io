@@ -17,9 +17,13 @@ searched for and stored. In this case, the Docker image would use `/out`, which
 would be a mount to a directory on the host.
 
 ```
+# First create the dedicated replay docker
+docker image build --tag traffic-refinery:replay -f Dockerfile.replay .
+
+# Then run the replay with a precollected trace
 export DIRECTORY=/path/to/directory 
 docker run --mount type=bind,source=$DIRECTORY,destination=/out --mount \
-    type=bind,source=$DIRECTORY/trconfig_replay.json,destination=/config/trconfig_replay.json,readonly \
-    --rm netmicroscope:replay -c /config/trconfig_replay.json -w e4:ce:8f:01:4c:54 \
-    -t /out/clean_dump.pcap
+    type=bind,source=$DIRECTORY/configs/trconfig_replay.json,destination=/config/trconfig_replay.json,readonly \
+    --rm traffic-refinery:replay -c /config/trconfig_replay.json -w e4:ce:8f:01:4c:54 \
+    -t /out/test/replay/clean_dump.pcap
 ```
